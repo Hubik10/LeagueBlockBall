@@ -3,183 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hubik Studio - Panel</title>
+    <title>League BlockBall</title>
     <style>
         :root {
-            --primary-red: #ff4d4d;
-            --sakura-pink: #ffb7c5;
-            --dark-bg: #1a1a2e;
-            --light-text: #f4f4f4;
+            --bg-color: #0d1117;
+            --container-bg: #161b22;
+            --accent-red: #ff4d4d;
+            --text-main: #c9d1d9;
+            --success-green: #238636;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             margin: 0;
-            background-color: #f0f2f5;
-            color: #333;
+            padding: 0;
+            overflow-x: hidden;
         }
 
-        /* --- Nawigacja --- */
+        /* --- Nawigacja: Logo i Języki w samych rogach --- */
         header {
-            background-color: var(--dark-bg);
-            padding: 10px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            padding: 10px 15px; /* Minimalny margines dla efektu "w rogu" */
+            background-color: #010409;
+            border-bottom: 2px solid var(--accent-red);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .logo img {
-            height: 60px;
-            border-radius: 50%;
-            border: 2px solid var(--sakura-pink);
-        }
-
-        .auth-buttons button {
-            background: transparent;
-            border: 1px solid var(--sakura-pink);
-            color: white;
-            padding: 8px 15px;
-            margin-left: 10px;
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             cursor: pointer;
-            border-radius: 5px;
+        }
+
+        .logo-box img {
+            height: 50px;
+            width: 50px;
+            image-rendering: pixelated;
+        }
+
+        .logo-box h1 {
+            font-size: 1.3rem;
+            color: white;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .auth-btns button {
+            background: transparent;
+            color: white;
+            border: 1px solid #30363d;
+            padding: 8px 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .auth-btns button:hover {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        /* Przełącznik języka z flagami */
+        .lang-switcher {
+            display: flex;
+            gap: 8px;
+            border-left: 1px solid #30363d;
+            padding-left: 15px;
+        }
+
+        .flag {
+            font-size: 22px;
+            cursor: pointer;
+            filter: grayscale(0.6);
             transition: 0.3s;
+            user-select: none;
         }
 
-        .auth-buttons button:hover {
-            background: var(--sakura-pink);
-            color: var(--dark-bg);
+        .flag:hover, .flag.active {
+            filter: grayscale(0);
+            transform: scale(1.1);
         }
 
-        /* --- Kontenery --- */
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background: white;
+        /* --- Sekcje --- */
+        .content-section {
+            display: none;
+            padding: 60px 20px;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .active-section {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- Strona Domowa --- */
+        .hero h2 { font-size: 3.5rem; color: white; margin-bottom: 20px; }
+        .hero p { font-size: 1.25rem; color: #8b949e; max-width: 600px; margin: 0 auto 30px; }
+
+        /* --- Formularze --- */
+        .form-card {
+            max-width: 380px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            border: 1px solid #30363d;
         }
-
-        h2 { color: var(--dark-bg); border-bottom: 2px solid var(--primary-red); padding-bottom: 10px; }
-
-        form { display: flex; flex-direction: column; gap: 15px; }
 
         input {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: white;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-red);
         }
 
         .btn-main {
-            background: var(--primary-red);
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-red);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 6px;
-            cursor: pointer;
             font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 1rem;
+            text-transform: uppercase;
         }
 
-        /* --- Sekcja Edytora (Ukryta) --- */
-        #editor-section {
-            display: none;
-            margin-top: 30px;
-            background: #fff;
-            border-left: 5px solid gold;
+        .btn-main:hover {
+            filter: brightness(1.1);
         }
 
-        textarea {
-            width: 100%;
-            height: 200px;
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-family: monospace;
-        }
+        /* Widok po zalogowaniu */
+        #logged-in-view h2 { color: var(--success-green); }
 
-        .hidden { display: none; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">
-        <img src="ikona.png" alt="Logo Hubik">
+    <div class="logo-box" onclick="showSection('home-section')">
+        <img src="ikona.png" alt="Logo">
+        <h1>League BlockBall</h1>
     </div>
-    <div class="auth-buttons">
-        <button onclick="showSection('login-box')">Zaloguj</button>
-        <button onclick="showSection('register-box')">Zarejestruj</button>
+    
+    <div class="nav-right">
+        <div class="auth-btns" id="auth-nav">
+            <button onclick="showSection('login-section')" data-key="nav-login">Zaloguj się</button>
+            <button onclick="showSection('register-section')" data-key="nav-reg">Rejestracja</button>
+        </div>
+        
+        <div class="lang-switcher">
+            <span class="flag active" onclick="setLang('pl')" title="Polski">🇵🇱</span>
+            <span class="flag" onclick="setLang('en')" title="English">🇬🇧</span>
+        </div>
     </div>
 </header>
 
-<div class="container">
-    <div id="login-box">
-        <h2>Logowanie</h2>
-        <form id="loginForm">
-            <input type="text" id="loginNick" placeholder="Login" required>
-            <input type="password" id="loginPass" placeholder="Hasło" required>
-            <button type="submit" class="btn-main">Wjedź na serwer</button>
-        </form>
-        <p id="loginError" style="color: red; display:none;">Błędne dane!</p>
-    </div>
-
-    <div id="register-box" class="hidden">
-        <h2>Rejestracja</h2>
-        <form id="regForm">
-            <input type="text" placeholder="Twój Nick" required>
-            <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Hasło" required>
-            <button type="submit" class="btn-main">Stwórz konto</button>
-        </form>
-    </div>
-
-    <div id="editor-section">
-        <h2>Witaj Hubik10! ⛩️</h2>
-        <p>To jest Twój prywatny mini-edytor:</p>
-        <textarea placeholder="Tutaj możesz pisać kod lub notatki..."></textarea>
-        <br>
-        <button class="btn-main" onclick="alert('Zapisano (symulacja)')">Zapisz zmiany</button>
+<div id="home-section" class="content-section active-section">
+    <div class="hero">
+        <h2 data-key="hero-title">Witaj w League BlockBall</h2>
+        <p data-key="hero-desc">Dołącz do najlepszej ligi pixel art, twórz drużyny i walcz o zwycięstwo!</p>
+        <button class="btn-main" style="max-width: 250px;" onclick="showSection('register-section')" data-key="hero-btn">Zacznij przygodę</button>
     </div>
 </div>
 
-<script>
-    const loginForm = document.getElementById('loginForm');
-    const editorSection = document.getElementById('editor-section');
-    const loginBox = document.getElementById('login-box');
-    const regBox = document.getElementById('register-box');
+<div id="login-section" class="content-section">
+    <div class="form-card">
+        <h2 data-key="login-h">Panel Logowania</h2>
+        <input type="text" id="loginNick" placeholder="Login">
+        <input type="password" id="loginPass" placeholder="Hasło">
+        <button class="btn-main" onclick="handleLogin()" data-key="login-btn">Wjedź na serwer</button>
+        <p id="error-msg" style="color:var(--accent-red); margin-top:15px; display:none;"></p>
+    </div>
+</div>
 
-    // Przełączanie między logowaniem a rejestracją
-    function showSection(id) {
-        loginBox.classList.add('hidden');
-        regBox.classList.add('hidden');
-        document.getElementById(id).classList.remove('hidden');
+<div id="register-section" class="content-section">
+    <div class="form-card">
+        <h2 data-key="reg-h">Nowe Konto</h2>
+        <input type="text" placeholder="Twój Nick" id="regNick">
+        <input type="email" placeholder="Adres E-mail" id="regEmail">
+        <input type="password" placeholder="Hasło" id="regPass">
+        <button class="btn-main" onclick="alert('Zarejestrowano pomyślnie!')" data-key="reg-btn">Załóż konto</button>
+    </div>
+</div>
+
+<div id="logged-in-view" class="content-section">
+    <h2 data-key="welcome-user">Witaj ponownie, Hubik10!</h2>
+    <p data-key="logged-info">Zostałeś pomyślnie zalogowany do systemu League BlockBall.</p>
+    <button class="btn-main" style="max-width: 200px; background: #30363d;" onclick="location.reload()">Wyloguj</button>
+</div>
+
+<script>
+    // --- TŁUMACZENIA ---
+    const translations = {
+        pl: {
+            "nav-login": "Zaloguj się",
+            "nav-reg": "Rejestracja",
+            "hero-title": "Witaj w League BlockBall",
+            "hero-desc": "Dołącz do najlepszej ligi pixel art, twórz drużyny i walcz o zwycięstwo!",
+            "hero-btn": "Zacznij przygodę",
+            "login-h": "Panel Logowania",
+            "login-btn": "Wjedź na serwer",
+            "reg-h": "Nowe Konto",
+            "reg-btn": "Załóż konto",
+            "welcome-user": "Witaj ponownie, Hubik10!",
+            "logged-info": "Zostałeś pomyślnie zalogowany do systemu League BlockBall."
+        },
+        en: {
+            "nav-login": "Login",
+            "nav-reg": "Register",
+            "hero-title": "Welcome to League BlockBall",
+            "hero-desc": "Join the best pixel art league, build teams and fight for victory!",
+            "hero-btn": "Start Adventure",
+            "login-h": "Login Panel",
+            "login-btn": "Enter Server",
+            "reg-h": "New Account",
+            "reg-btn": "Create Account",
+            "welcome-user": "Welcome back, Hubik10!",
+            "logged-info": "You have been successfully logged in to League BlockBall."
+        }
+    };
+
+    // --- LOGIKA JĘZYKÓW ---
+    function setLang(lang) {
+        document.querySelectorAll('[data-key]').forEach(el => {
+            const key = el.getAttribute('data-key');
+            el.innerText = translations[lang][key];
+        });
+
+        document.querySelectorAll('.flag').forEach(f => f.classList.remove('active'));
+        const activeFlagIdx = lang === 'pl' ? 0 : 1;
+        document.querySelectorAll('.flag')[activeFlagIdx].classList.add('active');
+        
+        // Placeholdery
+        if(lang === 'en') {
+            document.getElementById('loginNick').placeholder = "Username";
+            document.getElementById('loginPass').placeholder = "Password";
+            document.getElementById('regNick').placeholder = "Your Nick";
+            document.getElementById('regEmail').placeholder = "Email Address";
+            document.getElementById('regPass').placeholder = "Password";
+        } else {
+            document.getElementById('loginNick').placeholder = "Login";
+            document.getElementById('loginPass').placeholder = "Hasło";
+            document.getElementById('regNick').placeholder = "Twój Nick";
+            document.getElementById('regEmail').placeholder = "Adres E-mail";
+            document.getElementById('regPass').placeholder = "Hasło";
+        }
     }
 
-    // Obsługa logowania
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+    // --- NAWIGACJA ---
+    function showSection(id) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
+        document.getElementById(id).classList.add('active-section');
+    }
+
+    // --- LOGOWANIE ---
+    function handleLogin() {
         const nick = document.getElementById('loginNick').value;
         const pass = document.getElementById('loginPass').value;
+        const error = document.getElementById('error-msg');
 
-        // Twoje dane dostępowe
         if (nick === "Hubik10" && pass === "Hubert123") {
-            alert("Witaj szefie!");
-            loginBox.classList.add('hidden');
-            regBox.classList.add('hidden');
-            editorSection.style.display = 'block';
+            document.getElementById('auth-nav').style.display = 'none';
+            showSection('logged-in-view');
         } else {
-            document.getElementById('loginError').style.display = 'block';
+            error.innerText = "Nieprawidłowe dane logowania!";
+            error.style.display = 'block';
         }
-    });
-
-    // Rejestracja - na razie tylko komunikat
-    document.getElementById('regForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert("Konto zostało utworzone (wersja demo)!");
-    });
+    }
 </script>
 
 </body>

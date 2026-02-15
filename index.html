@@ -1,12 +1,186 @@
-<!doctype html>
-<html>
-  <head>
-    <title>League BlockBall</title>
-    <meta name="google-adsense-account" content="ca-pub-1247750848487466">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1247750848487466"
-     crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <p>TEST<strong>body</strong> tag will appear on the page, just like this <strong>p</strong> tag and its contents.</p>
-  </body>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubik Studio - Panel</title>
+    <style>
+        :root {
+            --primary-red: #ff4d4d;
+            --sakura-pink: #ffb7c5;
+            --dark-bg: #1a1a2e;
+            --light-text: #f4f4f4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        /* --- Nawigacja --- */
+        header {
+            background-color: var(--dark-bg);
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .logo img {
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--sakura-pink);
+        }
+
+        .auth-buttons button {
+            background: transparent;
+            border: 1px solid var(--sakura-pink);
+            color: white;
+            padding: 8px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .auth-buttons button:hover {
+            background: var(--sakura-pink);
+            color: var(--dark-bg);
+        }
+
+        /* --- Kontenery --- */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 { color: var(--dark-bg); border-bottom: 2px solid var(--primary-red); padding-bottom: 10px; }
+
+        form { display: flex; flex-direction: column; gap: 15px; }
+
+        input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .btn-main {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* --- Sekcja Edytora (Ukryta) --- */
+        #editor-section {
+            display: none;
+            margin-top: 30px;
+            background: #fff;
+            border-left: 5px solid gold;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-family: monospace;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="ikona.png" alt="Logo Hubik">
+    </div>
+    <div class="auth-buttons">
+        <button onclick="showSection('login-box')">Zaloguj</button>
+        <button onclick="showSection('register-box')">Zarejestruj</button>
+    </div>
+</header>
+
+<div class="container">
+    <div id="login-box">
+        <h2>Logowanie</h2>
+        <form id="loginForm">
+            <input type="text" id="loginNick" placeholder="Login" required>
+            <input type="password" id="loginPass" placeholder="Hasło" required>
+            <button type="submit" class="btn-main">Wjedź na serwer</button>
+        </form>
+        <p id="loginError" style="color: red; display:none;">Błędne dane!</p>
+    </div>
+
+    <div id="register-box" class="hidden">
+        <h2>Rejestracja</h2>
+        <form id="regForm">
+            <input type="text" placeholder="Twój Nick" required>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Hasło" required>
+            <button type="submit" class="btn-main">Stwórz konto</button>
+        </form>
+    </div>
+
+    <div id="editor-section">
+        <h2>Witaj Hubik10! ⛩️</h2>
+        <p>To jest Twój prywatny mini-edytor:</p>
+        <textarea placeholder="Tutaj możesz pisać kod lub notatki..."></textarea>
+        <br>
+        <button class="btn-main" onclick="alert('Zapisano (symulacja)')">Zapisz zmiany</button>
+    </div>
+</div>
+
+<script>
+    const loginForm = document.getElementById('loginForm');
+    const editorSection = document.getElementById('editor-section');
+    const loginBox = document.getElementById('login-box');
+    const regBox = document.getElementById('register-box');
+
+    // Przełączanie między logowaniem a rejestracją
+    function showSection(id) {
+        loginBox.classList.add('hidden');
+        regBox.classList.add('hidden');
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    // Obsługa logowania
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nick = document.getElementById('loginNick').value;
+        const pass = document.getElementById('loginPass').value;
+
+        // Twoje dane dostępowe
+        if (nick === "Hubik10" && pass === "Hubert123") {
+            alert("Witaj szefie!");
+            loginBox.classList.add('hidden');
+            regBox.classList.add('hidden');
+            editorSection.style.display = 'block';
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+        }
+    });
+
+    // Rejestracja - na razie tylko komunikat
+    document.getElementById('regForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert("Konto zostało utworzone (wersja demo)!");
+    });
+</script>
+
+</body>
 </html>

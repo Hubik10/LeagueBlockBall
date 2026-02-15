@@ -10,7 +10,8 @@
             --container-bg: #161b22;
             --accent-red: #ff4d4d;
             --text-main: #c9d1d9;
-            --success-green: #238636;
+            --gold: #ffcf40;
+            --header-bg: #010409;
         }
 
         body {
@@ -22,13 +23,13 @@
             overflow-x: hidden;
         }
 
-        /* --- Nawigacja: Logo i Języki w samych rogach --- */
+        /* --- Header --- */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 15px; /* Minimalny margines dla efektu "w rogu" */
-            background-color: #010409;
+            padding: 10px 15px;
+            background-color: var(--header-bg);
             border-bottom: 2px solid var(--accent-red);
             position: sticky;
             top: 0;
@@ -52,14 +53,24 @@
             font-size: 1.3rem;
             color: white;
             margin: 0;
-            letter-spacing: 0.5px;
         }
 
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
+
+        /* Przycisk Karty */
+        .icon-btn {
+            font-size: 20px;
+            cursor: pointer;
+            color: white;
+            background: none;
+            border: none;
+            transition: 0.3s;
+        }
+        .icon-btn:hover { color: var(--accent-red); transform: scale(1.1); }
 
         .auth-btns button {
             background: transparent;
@@ -68,106 +79,116 @@
             padding: 8px 14px;
             cursor: pointer;
             border-radius: 6px;
-            font-weight: 500;
             transition: 0.2s;
         }
+        .auth-btns button:hover { border-color: var(--accent-red); color: var(--accent-red); }
 
-        .auth-btns button:hover {
-            border-color: var(--accent-red);
-            color: var(--accent-red);
+        /* --- Rozwijane Menu Języków --- */
+        .lang-dropdown {
+            position: relative;
+            display: inline-block;
         }
 
-        /* Przełącznik języka z flagami */
-        .lang-switcher {
+        .lang-current {
             display: flex;
+            align-items: center;
             gap: 8px;
-            border-left: 1px solid #30363d;
-            padding-left: 15px;
-        }
-
-        .flag {
-            font-size: 22px;
+            background: #21262d;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            filter: grayscale(0.6);
-            transition: 0.3s;
+            border: 1px solid #30363d;
             user-select: none;
         }
 
-        .flag:hover, .flag.active {
-            filter: grayscale(0);
-            transform: scale(1.1);
-        }
-
-        /* --- Sekcje --- */
-        .content-section {
+        .lang-list {
             display: none;
-            padding: 60px 20px;
-            text-align: center;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .active-section {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* --- Strona Domowa --- */
-        .hero h2 { font-size: 3.5rem; color: white; margin-bottom: 20px; }
-        .hero p { font-size: 1.25rem; color: #8b949e; max-width: 600px; margin: 0 auto 30px; }
-
-        /* --- Formularze --- */
-        .form-card {
-            max-width: 380px;
-            margin: 0 auto;
-            background: var(--container-bg);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            position: absolute;
+            right: 0;
+            top: 110%;
+            background-color: var(--container-bg);
+            min-width: 140px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+            border-radius: 6px;
             border: 1px solid #30363d;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .lang-list.show {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        .lang-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: white;
+        }
+
+        .lang-item:hover {
+            background-color: #30363d;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Reszta Sekcji --- */
+        .content-section { display: none; padding: 60px 20px; animation: fadeIn 0.4s ease; }
+        .active-section { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .hero-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .hero-text { text-align: left; max-width: 500px; }
+        .hero-text h2 { font-size: 3.5rem; color: white; margin: 0; }
+
+        .player-card {
+            width: 240px; height: 340px;
+            background: linear-gradient(135deg, #1e1e1e 0%, #111 100%);
+            border: 3px solid var(--gold);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            transition: 0.4s;
+            cursor: pointer;
+            text-align: center;
+        }
+        .player-card:hover { transform: translateY(-10px) rotate(2deg); border-color: var(--accent-red); }
+
+        .card-header { height: 60%; font-size: 80px; display: flex; align-items: center; justify-content: center; }
+        .card-name { font-weight: bold; color: var(--gold); }
+
+        .form-card {
+            max-width: 380px; margin: 0 auto;
+            background: var(--container-bg); padding: 40px;
+            border-radius: 12px; border: 1px solid #30363d;
         }
 
         input {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            background: #0d1117;
-            border: 1px solid #30363d;
-            color: white;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--accent-red);
+            width: 100%; padding: 14px; margin: 10px 0;
+            background: #0d1117; border: 1px solid #30363d;
+            color: white; border-radius: 8px; box-sizing: border-box;
         }
 
         .btn-main {
-            width: 100%;
-            padding: 14px;
-            background: var(--accent-red);
-            color: white;
-            border: none;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 15px;
-            font-size: 1rem;
-            text-transform: uppercase;
+            width: 100%; padding: 14px; background: var(--accent-red);
+            color: white; border: none; font-weight: bold;
+            border-radius: 8px; cursor: pointer; margin-top: 15px;
         }
-
-        .btn-main:hover {
-            filter: brightness(1.1);
-        }
-
-        /* Widok po zalogowaniu */
-        #logged-in-view h2 { color: var(--success-green); }
-
     </style>
 </head>
 <body>
@@ -179,128 +200,138 @@
     </div>
     
     <div class="nav-right">
+        <button class="icon-btn" onclick="alert('Kolekcja wkrótce!')">🎴</button>
+        
         <div class="auth-btns" id="auth-nav">
             <button onclick="showSection('login-section')" data-key="nav-login">Zaloguj się</button>
             <button onclick="showSection('register-section')" data-key="nav-reg">Rejestracja</button>
         </div>
         
-        <div class="lang-switcher">
-            <span class="flag active" onclick="setLang('pl')" title="Polski">🇵🇱</span>
-            <span class="flag" onclick="setLang('en')" title="English">🇬🇧</span>
+        <div class="lang-dropdown">
+            <div class="lang-current" onclick="toggleLangMenu()">
+                <span id="current-flag">🇵🇱</span> <span id="current-lang-name">Polski</span>
+            </div>
+            <div class="lang-list" id="lang-list">
+                <div class="lang-item" onclick="changeLang('pl')">
+                    <span>🇵🇱</span> Polski
+                </div>
+                <div class="lang-item" onclick="changeLang('en')">
+                    <span>🇬🇧</span> English
+                </div>
+            </div>
         </div>
     </div>
 </header>
 
 <div id="home-section" class="content-section active-section">
-    <div class="hero">
-        <h2 data-key="hero-title">Witaj w League BlockBall</h2>
-        <p data-key="hero-desc">Dołącz do najlepszej ligi pixel art, twórz drużyny i walcz o zwycięstwo!</p>
-        <button class="btn-main" style="max-width: 250px;" onclick="showSection('register-section')" data-key="hero-btn">Zacznij przygodę</button>
+    <div class="hero-container">
+        <div class="hero-text">
+            <h2 data-key="hero-title">League BlockBall</h2>
+            <p data-key="hero-desc">Zbieraj unikalne karty, buduj składy i dominuj w lidze pixel art!</p>
+            <button class="btn-main" style="width: 220px;" onclick="showSection('register-section')" data-key="hero-btn">Dołącz do gry</button>
+        </div>
+        <div class="player-card">
+            <div class="card-header">⚽</div>
+            <div class="card-name">BLOCK CHAMP</div>
+        </div>
     </div>
 </div>
 
 <div id="login-section" class="content-section">
     <div class="form-card">
-        <h2 data-key="login-h">Panel Logowania</h2>
+        <h2 data-key="login-h">Logowanie</h2>
         <input type="text" id="loginNick" placeholder="Login">
         <input type="password" id="loginPass" placeholder="Hasło">
-        <button class="btn-main" onclick="handleLogin()" data-key="login-btn">Wjedź na serwer</button>
-        <p id="error-msg" style="color:var(--accent-red); margin-top:15px; display:none;"></p>
+        <button class="btn-main" onclick="handleLogin()" data-key="login-btn">Zaloguj</button>
     </div>
 </div>
 
 <div id="register-section" class="content-section">
     <div class="form-card">
-        <h2 data-key="reg-h">Nowe Konto</h2>
-        <input type="text" placeholder="Twój Nick" id="regNick">
-        <input type="email" placeholder="Adres E-mail" id="regEmail">
-        <input type="password" placeholder="Hasło" id="regPass">
-        <button class="btn-main" onclick="alert('Zarejestrowano pomyślnie!')" data-key="reg-btn">Załóż konto</button>
+        <h2 data-key="reg-h">Rejestracja</h2>
+        <input type="text" id="regNick" placeholder="Nick">
+        <input type="email" id="regEmail" placeholder="Email">
+        <input type="password" id="regPass" placeholder="Hasło">
+        <button class="btn-main" data-key="reg-btn">Stwórz Konto</button>
     </div>
 </div>
 
-<div id="logged-in-view" class="content-section">
-    <h2 data-key="welcome-user">Witaj ponownie, Hubik10!</h2>
-    <p data-key="logged-info">Zostałeś pomyślnie zalogowany do systemu League BlockBall.</p>
-    <button class="btn-main" style="max-width: 200px; background: #30363d;" onclick="location.reload()">Wyloguj</button>
-</div>
-
 <script>
-    // --- TŁUMACZENIA ---
     const translations = {
         pl: {
             "nav-login": "Zaloguj się",
             "nav-reg": "Rejestracja",
-            "hero-title": "Witaj w League BlockBall",
-            "hero-desc": "Dołącz do najlepszej ligi pixel art, twórz drużyny i walcz o zwycięstwo!",
-            "hero-btn": "Zacznij przygodę",
-            "login-h": "Panel Logowania",
-            "login-btn": "Wjedź na serwer",
+            "hero-title": "League BlockBall",
+            "hero-desc": "Zbieraj unikalne karty, buduj składy i dominuj w lidze pixel art!",
+            "hero-btn": "Dołącz do gry",
+            "login-h": "Logowanie",
+            "login-btn": "Zaloguj",
             "reg-h": "Nowe Konto",
-            "reg-btn": "Załóż konto",
-            "welcome-user": "Witaj ponownie, Hubik10!",
-            "logged-info": "Zostałeś pomyślnie zalogowany do systemu League BlockBall."
+            "reg-btn": "Stwórz Konto",
+            "lang-name": "Polski",
+            "flag": "🇵🇱"
         },
         en: {
             "nav-login": "Login",
             "nav-reg": "Register",
-            "hero-title": "Welcome to League BlockBall",
-            "hero-desc": "Join the best pixel art league, build teams and fight for victory!",
-            "hero-btn": "Start Adventure",
-            "login-h": "Login Panel",
-            "login-btn": "Enter Server",
+            "hero-title": "League BlockBall",
+            "hero-desc": "Collect unique cards, build squads and dominate the pixel art league!",
+            "hero-btn": "Join the Game",
+            "login-h": "Login",
+            "login-btn": "Sign In",
             "reg-h": "New Account",
             "reg-btn": "Create Account",
-            "welcome-user": "Welcome back, Hubik10!",
-            "logged-info": "You have been successfully logged in to League BlockBall."
+            "lang-name": "English",
+            "flag": "🇬🇧"
         }
     };
 
-    // --- LOGIKA JĘZYKÓW ---
-    function setLang(lang) {
+    function toggleLangMenu() {
+        document.getElementById('lang-list').classList.toggle('show');
+    }
+
+    function changeLang(lang) {
+        // Zamknij menu
+        document.getElementById('lang-list').classList.remove('show');
+        
+        // Zmień teksty na stronie
         document.querySelectorAll('[data-key]').forEach(el => {
-            const key = el.getAttribute('data-key');
-            el.innerText = translations[lang][key];
+            el.innerText = translations[lang][el.getAttribute('data-key')];
         });
 
-        document.querySelectorAll('.flag').forEach(f => f.classList.remove('active'));
-        const activeFlagIdx = lang === 'pl' ? 0 : 1;
-        document.querySelectorAll('.flag')[activeFlagIdx].classList.add('active');
-        
+        // Aktualizuj przycisk menu
+        document.getElementById('current-flag').innerText = translations[lang]["flag"];
+        document.getElementById('current-lang-name').innerText = translations[lang]["lang-name"];
+
         // Placeholdery
         if(lang === 'en') {
             document.getElementById('loginNick').placeholder = "Username";
-            document.getElementById('loginPass').placeholder = "Password";
             document.getElementById('regNick').placeholder = "Your Nick";
-            document.getElementById('regEmail').placeholder = "Email Address";
-            document.getElementById('regPass').placeholder = "Password";
         } else {
             document.getElementById('loginNick').placeholder = "Login";
-            document.getElementById('loginPass').placeholder = "Hasło";
-            document.getElementById('regNick').placeholder = "Twój Nick";
-            document.getElementById('regEmail').placeholder = "Adres E-mail";
-            document.getElementById('regPass').placeholder = "Hasło";
+            document.getElementById('regNick').placeholder = "Nick";
         }
     }
 
-    // --- NAWIGACJA ---
+    // Zamknij menu jeśli klikniesz poza nie
+    window.onclick = function(event) {
+        if (!event.target.closest('.lang-dropdown')) {
+            document.getElementById('lang-list').classList.remove('show');
+        }
+    }
+
     function showSection(id) {
         document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
         document.getElementById(id).classList.add('active-section');
     }
 
-    // --- LOGOWANIE ---
     function handleLogin() {
         const nick = document.getElementById('loginNick').value;
         const pass = document.getElementById('loginPass').value;
-        const error = document.getElementById('error-msg');
-
         if (nick === "Hubik10" && pass === "Hubert123") {
-            document.getElementById('auth-nav').style.display = 'none';
-            showSection('logged-in-view');
+            alert("Witaj szefie!");
         } else {
-            error.innerText = "Nieprawidłowe dane logowania!";
-            error.style.display = 'block';
+            alert("Błędne dane!");
         }
     }
 </script>
